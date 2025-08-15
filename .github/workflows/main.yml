@@ -1,0 +1,40 @@
+name: Build Puppy Linux Image
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up QEMU
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y qemu qemu-utils
+
+    - name: Download ISO
+      run: |
+        wget https://distro.ibiblio.org/puppylinux/puppy-bookwormpup/BookwormPup64/10.0.11/BookwormPup64_10.0.11.iso
+
+    - name: Create QCOW2 image
+      run: |
+        qemu-img create -f qcow2 BookwormPup64.qcow2 10G
+        sudo mount -o loop BookwormPup64_10.0.11.iso /mnt
+        sudo cp -a /mnt/. /mnt2
+        sudo umount /mnt
+        sudo mount -o loop BookwormPup64.qcow2 /mnt
+        sudo cp -a /mnt2/. /mnt
+        sudo umount /mnt
+        sudo rm -rf /mnt2
+
+    - name: Upload QCOW2 image
+      uses: actions/upload-artifact@v2
+      with:
+        name: BookwormPup64.qcow2
+        path: BookwormPup64.qcow2
