@@ -1,0 +1,6 @@
+DISTRO_NAME='BookwormPup64'
+DISTRO_VERSION='10.0.11'
+DISTRO_ARCH='x86_64'
+DISTRO_COMPRESS='xz'
+DISTRO_KERNEL='6.1.135'
+DISTRO_REPO='https://distro.ibiblio.org/puppylinux/puppy-bookwormpup/BookwormPup64/10.0.11/'
